@@ -11,3 +11,6 @@ wheels/
 
 # 不上传大量数据，由用户自行下载
 data/
+logs/
+report/
+
