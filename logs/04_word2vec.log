@@ -1,0 +1,40 @@
+============================================================
+第 4 步：分时段 Word2Vec 训练
+============================================================
+  参数: vector_size=200 window=8 min_count=10 sg=1 epochs=10 workers=18
+  seeds: [42, 43]
+
+处理 2021 时段 ...
+  输入: data/processed/zhwiki_2021_tokens.txt (11319212 句)
+  seed=42 词表大小=433828 耗时=2815s -> w2v_2021_seed42.kv
+  seed=43 词表大小=433828 耗时=2494s -> w2v_2021_seed43.kv
+
+  === 2021 锚定词核查 (seed=42) ===
+  anchor      in_vocab  count     
+  人工智能        True      1929      
+  算法          True      7432      
+  模型          True      22863     
+  自然语言处理      True      139       
+  工作          True      149371    
+  消费          True      5965      
+  信任          True      7533      
+
+
+处理 2022 时段 ...
+  输入: data/processed/zhwiki_2022_tokens.txt (12333137 句)
+  seed=42 词表大小=452992 耗时=2629s -> w2v_2022_seed42.kv
+  seed=43 词表大小=452992 耗时=2720s -> w2v_2022_seed43.kv
+
+  === 2022 锚定词核查 (seed=42) ===
+  anchor      in_vocab  count     
+  人工智能        True      2228      
+  算法          True      7788      
+  模型          True      24447     
+  自然语言处理      True      154       
+  工作          True      161949    
+  消费          True      6479      
+  信任          True      8185      
+
+
+处理 2026 时段 ...
+  输入: data/processed/zhwiki_2026_tokens.txt (16447270 句)

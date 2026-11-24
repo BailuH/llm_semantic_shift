@@ -1,0 +1,144 @@
+============================================================
+第 7 步：时段分类建模（三分类）
+============================================================
+
+加载并均衡采样语料 (max_per_period=80000) ...
+  2021: 采样 80000 篇
+  2022: 采样 80000 篇
+  2026: 采样 80000 篇
+  总计 240000 篇
+  类别分布: {'2021': 80000, '2022': 80000, '2026': 80000}
+  多数类基线 accuracy = 0.3333
+  训练集 192000 / 测试集 48000
+
+多进程分词 (8 进程) ...
+  分词训练集 ...
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Loading model cost 1.802 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.651 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.691 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.865 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.780 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.964 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.824 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.776 seconds.
+Prefix dict has been built successfully.
+  分词测试集 ...
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Building prefix dict from the default dictionary ...
+Loading model from cache /tmp/jieba.cache
+Loading model cost 1.978 seconds.
+Prefix dict has been built successfully.
+Loading model cost 2.101 seconds.
+Prefix dict has been built successfully.
+Loading model cost 1.956 seconds.
+Prefix dict has been built successfully.
+Loading model cost 2.093 seconds.
+Prefix dict has been built successfully.
+Loading model cost 2.279 seconds.
+Prefix dict has been built successfully.
+Loading model cost 2.034 seconds.
+Prefix dict has been built successfully.
+Loading model cost 2.393 seconds.
+Prefix dict has been built successfully.
+Loading model cost 2.118 seconds.
+Prefix dict has been built successfully.
+
+拟合 TF-IDF (仅训练集) ...
+  词表大小: 50000, 矩阵: (192000, 50000)
+
+=== MultinomialNB ===
+Accuracy: 0.3678  (基线 0.3333, 提升 +0.0344)
+              precision    recall  f1-score   support
+
+        2021     0.3517    0.5346    0.4243     16000
+        2022     0.3203    0.2301    0.2678     16000
+        2026     0.4446    0.3385    0.3843     16000
+
+    accuracy                         0.3678     48000
+   macro avg     0.3722    0.3678    0.3588     48000
+weighted avg     0.3722    0.3678    0.3588     48000
+
+混淆矩阵 (行=真实, 列=预测, 顺序 2021/2022/2026):
+[[8554 4340 3106]
+ [8657 3682 3661]
+ [7112 3472 5416]]
+
+=== LinearSVC ===
+Accuracy: 0.3625  (基线 0.3333, 提升 +0.0292)
+              precision    recall  f1-score   support
+
+        2021     0.3447    0.3649    0.3545     16000
+        2022     0.3204    0.3134    0.3168     16000
+        2026     0.4249    0.4093    0.4170     16000
+
+    accuracy                         0.3625     48000
+   macro avg     0.3633    0.3625    0.3628     48000
+weighted avg     0.3633    0.3625    0.3628     48000
+
+混淆矩阵 (行=真实, 列=预测, 顺序 2021/2022/2026):
+[[5839 5952 4209]
+ [6334 5014 4652]
+ [4768 4684 6548]]
+
+混淆矩阵已保存: outputs/tables/confusion_matrix.csv
+分类汇总已保存: outputs/tables/classification_summary.csv
+
+=== 错分分析（基于 LinearSVC）===
+  错分样本数: 30599
+
+  [样本 1] 真实=2021 预测=2026 | 标题: 撞击事件
+    Top TF-IDF 词: [('撞击', 0.72), ('地球', 0.305), ('事件', 0.24), ('小行星', 0.224), ('陨石', 0.203), ('彗星', 0.187), ('灭绝', 0.131), ('陨石坑', 0.13)]
+
+  [样本 2] 真实=2021 预测=2022 | 标题: 冠一
+    Top TF-IDF 词: [('通用', 0.499), ('飞机', 0.45), ('研制', 0.235), ('技术', 0.15), ('航空', 0.15), ('民营', 0.145), ('螺旋桨', 0.145), ('有限公司', 0.132)]
+
+  [样本 3] 真实=2022 预测=2021 | 标题: 武汉地铁集团
+    Top TF-IDF 词: [('武汉市', 0.514), ('武汉', 0.418), ('地铁', 0.346), ('轨道交通', 0.329), ('号线', 0.2), ('万人次', 0.188), ('线路', 0.181), ('运营', 0.177)]
+
+  [样本 4] 真实=2021 预测=2022 | 标题: 中华民族致公党
+    Top TF-IDF 词: [('中华民族', 0.444), ('洪门', 0.38), ('政党', 0.301), ('主席', 0.225), ('教授', 0.166), ('改名', 0.143), ('建言', 0.128), ('公职人员', 0.123)]
+
+  [样本 5] 真实=2022 预测=2026 | 标题: 自由基聚合反应
+    Top TF-IDF 词: [('自由基', 0.592), ('引发', 0.509), ('聚合物', 0.327), ('聚合', 0.281), ('金属', 0.144), ('步骤', 0.141), ('单体', 0.122), ('分子', 0.115)]
+
+错分样本已保存: outputs/tables/misclassification_analysis.csv
+
+混淆最严重方向: 2022->2021 (6334 例)
+
+完成。
